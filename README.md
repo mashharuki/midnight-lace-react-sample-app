@@ -1,87 +1,93 @@
 # midnight-lace-react-sample-app
 
-Midnight Network (PreProd) に接続するサンプル dApp のフロントエンドです。  
-Lace Wallet を使ってウォレット接続・シールドアドレス表示・残高確認ができます。
+A sample dApp frontend for connecting to the Midnight Network (PreProd).  
+Use Lace Wallet to connect your wallet, view your shielded address, and check your balance.
 
-## 機能概要
+## Screenshots
 
-| 機能 | 説明 |
+![](./docs/imgs/1.png)
+
+![](./docs/imgs/2.png)
+
+## Features
+
+| Feature | Description |
 |---|---|
-| Lace Wallet 接続 | `window.midnight.mnLace` を 100ms ポーリングで検出し接続 |
-| バージョン検証 | Connector API バージョンが `>=1.0.0` か確認 |
-| ネットワーク検証 | PreProd / mainnet / undeployed / preview の順に自動試行 |
-| アドレス表示 | シールドアドレスをコピー可能な形式で表示 |
-| 残高表示 | Shielded / Unshielded / Dust の 3 種を tDUST 単位で表示 |
-| 言語切り替え | 右上ボタンで日本語 ⇆ English を即時切り替え（localStorage 永続化） |
+| Lace Wallet Connection | Detects and connects to `window.midnight.mnLace` via 100ms polling |
+| Version Validation | Verifies that the Connector API version is `>=1.0.0` |
+| Network Detection | Automatically tries networks in order: PreProd / mainnet / undeployed / preview |
+| Address Display | Shows the shielded address in a copyable format |
+| Balance Display | Shows Shielded / Unshielded / Dust balances in tDUST units |
+| Language Toggle | Instantly switch between Japanese and English via the top-right button (persisted in localStorage) |
 
-## 技術スタック
+## Tech Stack
 
-| カテゴリ | ライブラリ / ツール |
+| Category | Library / Tool |
 |---|---|
-| フレームワーク | React 19 + TypeScript |
-| ビルド | Vite 8 |
-| スタイリング | Tailwind CSS v4 (`@tailwindcss/vite`) |
-| UI コンポーネント | shadcn/ui (Button, Badge, Card) + Lucide React |
-| 国際化 | i18next 26 + react-i18next 17 |
-| ウォレット連携 | `@midnight-ntwrk/dapp-connector-api` |
-| 非同期処理 | RxJS 7 |
-| パッケージマネージャー | Bun |
-| フォーマッター | Biome |
+| Framework | React 19 + TypeScript |
+| Build | Vite 8 |
+| Styling | Tailwind CSS v4 (`@tailwindcss/vite`) |
+| UI Components | shadcn/ui (Button, Badge, Card) + Lucide React |
+| Internationalization | i18next 26 + react-i18next 17 |
+| Wallet Integration | `@midnight-ntwrk/dapp-connector-api` |
+| Async Processing | RxJS 7 |
+| Package Manager | Bun |
+| Formatter | Biome |
 
-## ディレクトリ構成
+## Directory Structure
 
 ```
 src/
-├── App.tsx                     # ルートコンポーネント（接続状態で画面切替）
-├── main.tsx                    # エントリーポイント
+├── App.tsx                     # Root component (switches view based on connection state)
+├── main.tsx                    # Entry point
 ├── components/
-│   ├── ConnectSection.tsx      # 未接続時のランディング画面
-│   ├── AddressCard.tsx         # 接続後のウォレット情報カード
-│   ├── LanguageToggle.tsx      # 右上固定の言語切り替えボタン
-│   └── ui/                    # shadcn/ui 基本コンポーネント
+│   ├── ConnectSection.tsx      # Landing screen shown when not connected
+│   ├── AddressCard.tsx         # Wallet info card shown after connection
+│   ├── LanguageToggle.tsx      # Fixed language toggle button in the top-right corner
+│   └── ui/                    # Base shadcn/ui components
 ├── contexts/
-│   ├── WalletContext.tsx       # ウォレット状態管理プロバイダー
-│   ├── walletContextDef.ts    # Context 型定義
-│   └── useWallet.ts           # useWallet フック
+│   ├── WalletContext.tsx       # Wallet state management provider
+│   ├── walletContextDef.ts    # Context type definitions
+│   └── useWallet.ts           # useWallet hook
 ├── hooks/
-│   └── useBalance.ts          # 残高取得フック
+│   └── useBalance.ts          # Balance fetching hook
 ├── i18n/
-│   ├── index.ts               # i18next 初期化（デフォルト: 日本語）
+│   ├── index.ts               # i18next initialization (default: Japanese)
 │   └── locales/
-│       ├── ja.ts              # 日本語翻訳
-│       └── en.ts              # 英語翻訳
+│       ├── ja.ts              # Japanese translations
+│       └── en.ts              # English translations
 ├── lib/
-│   ├── wallet.ts              # Lace 接続ロジック・エラークラス群
-│   └── utils.ts               # Tailwind クラス結合ユーティリティ
+│   ├── wallet.ts              # Lace connection logic and error classes
+│   └── utils.ts               # Tailwind class merging utility
 └── utils/
-    ├── constants.ts           # ネットワーク設定・通貨単位等の定数
-    └── types.ts               # 共通型定義
+    ├── constants.ts           # Network config, currency units, and other constants
+    └── types.ts               # Shared type definitions
 ```
 
-## セットアップ
+## Setup
 
 ```bash
 bun install
-bun run dev      # 開発サーバー起動 (http://localhost:5173)
-bun run build    # 本番ビルド → dist/
-bun run preview  # dist/ をローカルプレビュー
-bun run lint     # ESLint 実行
-bun run format   # Biome フォーマット
+bun run dev      # Start development server (http://localhost:5173)
+bun run build    # Production build → dist/
+bun run preview  # Preview dist/ locally
+bun run lint     # Run ESLint
+bun run format   # Run Biome formatter
 ```
 
-## 前提条件
+## Prerequisites
 
-- [Lace Wallet](https://www.lace.io/) ブラウザ拡張機能（Midnight 対応版）をインストール済みであること
-- Lace の設定で **PreProd** ネットワークが選択されていること
-- ZK 証明が必要な操作を行う場合は Proof Server（ポート 6300）を起動すること
+- [Lace Wallet](https://www.lace.io/) browser extension (Midnight-compatible version) must be installed
+- The **PreProd** network must be selected in Lace's settings
+- If performing operations that require ZK proofs, start the Proof Server (port 6300)
 
 ```bash
-# プロジェクトルートから Midnight ローカルインフラを起動する場合
+# To start the Midnight local infrastructure from the project root
 docker compose -f standalone.yml up -d
 ```
 
-## 環境変数
+## Environment Variables
 
-現在、必須の環境変数はありません。  
-Indexer / Node の URI は Lace Wallet から自動取得し、取得できない場合は `src/utils/constants.ts` の `FALLBACK_URIS`（testnet-02）にフォールバックします。
+No required environment variables at this time.  
+Indexer / Node URIs are automatically retrieved from Lace Wallet. If unavailable, the app falls back to `FALLBACK_URIS` (testnet-02) defined in `src/utils/constants.ts`.
 
